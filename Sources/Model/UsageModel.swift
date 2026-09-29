@@ -496,6 +496,8 @@ struct ProviderSnapshot: Identifiable, Equatable {
         case "kiro":       return L10n.t("Sign in with kiro-cli to read your usage", locale: locale)
         case "amp":        return L10n.t("Run amp login in Terminal to read your usage", locale: locale)
         case "apify":      return L10n.t("Run apify login in Terminal, or paste an Apify API token in Settings", locale: locale)
+        case "elevenlabs": return L10n.t("Paste an ElevenLabs API key in Settings, or export ELEVENLABS_API_KEY", locale: locale)
+        case "higgsfield": return L10n.t("Run higgsfield auth login in Terminal to read your credits", locale: locale)
         case "kilo":       return L10n.t("Sign in with the Kilo CLI to read your usage", locale: locale)
         // Two Ollamas, and they are stuck for different reasons: the hosted
         // one wants a key, the local one wants the daemon running.

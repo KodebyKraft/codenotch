@@ -109,7 +109,10 @@ targets:
         # Set explicitly so Sparkle never asks on first launch. Left unset, it
         # shows a "check for updates automatically?" prompt, which is exactly
         # the permission this is meant to avoid.
-        SUEnableAutomaticChecks: true
+        # KBK fork: off. The official feed would offer upstream's build, and
+        # installing it replaces this one and its extra providers. Upstream
+        # changes come in by merging and rebuilding instead.
+        SUEnableAutomaticChecks: false
         # Never downloads unasked: a new version is offered in the notch and
         # installed when Update is chosen — see `Updater`.
         SUAutomaticallyUpdate: false

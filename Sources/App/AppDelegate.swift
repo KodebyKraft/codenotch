@@ -169,7 +169,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 + antigravityProfiles.map { AntigravityProvider(profile: $0) }
                 + [GLMProvider(), MiniMaxProvider(web: miniMaxWeb), GrokLocalProvider(), DevinLocalProvider(), OpenCodeProvider(),
                    CommandCodeProvider(), GitHubCopilotProvider(), KimiProvider(), KiroProvider(), AmpProvider(),
-                   ApifyProvider(), KiloProvider(),
+                   ApifyProvider(), KiloProvider(), ElevenLabsProvider(), HiggsfieldProvider(),
                    OllamaLocalProvider(endpoint: URL(string: preferences.ollamaEndpoint)!),
                    LMStudioLocalProvider(endpoint: URL(string: preferences.lmstudioEndpoint)!),
                    OllamaProvider(),

@@ -1492,7 +1492,7 @@ struct SettingsView: View {
     /// this, sees four blank rings and concludes it is broken — and the
     /// distinction that catches them out is Claude *Code*, not the Claude app.
     static var setupCopy: String {
-        L10n.t("Codenotch reads usage from tools already signed in on this Mac — it never asks for your password. Install and sign in to any of Claude Code (the terminal tool, not the Claude app), Cursor (the editor or cursor-agent), Codex, Antigravity, GLM, Grok, OpenCode, Command Code, GitHub Copilot, Kimi Code, Kiro, Amp, Apify, the Kilo CLI or a Gemini API key (via Gemini CLI, OpenCode or Hermes), and its ring appears in the notch.")
+        L10n.t("Codenotch reads usage from tools already signed in on this Mac — it never asks for your password. Install and sign in to any of Claude Code (the terminal tool, not the Claude app), Cursor (the editor or cursor-agent), Codex, Antigravity, GLM, Grok, OpenCode, Command Code, GitHub Copilot, Kimi Code, Kiro, Amp, Apify, ElevenLabs, the Higgsfield CLI, the Kilo CLI or a Gemini API key (via Gemini CLI, OpenCode or Hermes), and its ring appears in the notch.")
     }
 
     /// Said before it happens rather than after. A system dialogue asking to
@@ -2078,6 +2078,12 @@ private struct AccountRow: View {
             if provider.id == "apify" {
                 apifyTokenEntry
             }
+
+            // ElevenLabs has no CLI login to borrow, so the key is pasted
+            // here. Stored in the keychain on Save, the same way Ollama's is.
+            if provider.id == "elevenlabs" {
+                elevenLabsKeyEntry
+            }
         }
     }
 
@@ -2150,6 +2156,40 @@ private struct AccountRow: View {
                 }
             }
             Text(L10n.t("Paste a token from Apify Console › Settings › API & Integrations. Not needed after apify login, or with APIFY_TOKEN exported. Stored in your login keychain."))
+                .foregroundStyle(.tertiary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.top, 2)
+    }
+
+    /// The API key input for ElevenLabs — the same shape as Apify's above.
+    @State private var elevenLabsKey = ""
+    @State private var elevenLabsKeySaved = false
+
+    private var elevenLabsKeyEntry: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(L10n.t("ElevenLabs API key"))
+                .foregroundStyle(.secondary)
+            HStack(spacing: 8) {
+                SecureField(L10n.t("Paste your key"), text: $elevenLabsKey)
+                    .textContentType(.password)
+                    .textFieldStyle(.roundedBorder)
+                    .labelsHidden()
+                    .frame(maxWidth: 260)
+                Button(L10n.t("Save")) {
+                    guard !elevenLabsKey.isEmpty else { return }
+                    ElevenLabsCredentials.storeSettingsKey(elevenLabsKey)
+                    elevenLabsKey = ""
+                    elevenLabsKeySaved = true
+                    _ = signIn(provider.id)
+                }
+                .disabled(elevenLabsKey.isEmpty)
+                if elevenLabsKeySaved {
+                    Text(L10n.t("Saved"))
+                        .foregroundStyle(.green)
+                }
+            }
+            Text(L10n.t("Create a key in ElevenLabs › Developers › API Keys with User read access. Not needed with ELEVENLABS_API_KEY exported. Stored in your login keychain."))
                 .foregroundStyle(.tertiary)
                 .fixedSize(horizontal: false, vertical: true)
         }
